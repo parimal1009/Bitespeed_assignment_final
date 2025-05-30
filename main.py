@@ -284,16 +284,15 @@ async def reset_database(db: Session = Depends(get_db)):
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Failed to reset database: {str(e)}")
 
-# Serve static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
+
 
 @app.get("/")
 async def serve_frontend():
     """Serve the frontend HTML file"""
     return FileResponse("static/index.html")
 
-# For Vercel deployment
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+
 
 # Create the Vercel handler
 handler = app
