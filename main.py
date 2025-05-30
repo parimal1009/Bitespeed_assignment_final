@@ -248,7 +248,12 @@ async def identify_contact(request: IdentifyRequest, db: Session = Depends(get_d
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
-    return {"status": "healthy", "timestamp": datetime.utcnow()}
+    return {
+        "status": "healthy", 
+        "timestamp": datetime.utcnow(),
+        "service": "Bitespeed Identity Reconciliation",
+        "version": "1.0.0"
+    }
 
 @app.get("/contacts/stats")
 async def get_contact_stats(db: Session = Depends(get_db)):
@@ -284,15 +289,16 @@ async def reset_database(db: Session = Depends(get_db)):
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Failed to reset database: {str(e)}")
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
-
+# Serve static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 async def serve_frontend():
     """Serve the frontend HTML file"""
     return FileResponse("static/index.html")
 
-
-
-# Create the Vercel handler
-handler = app
+# Render deployment handler
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 9000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
