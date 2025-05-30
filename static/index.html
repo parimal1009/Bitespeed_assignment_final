@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitespeed Identity Reconciliation</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="background"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🔮 Bitespeed Identity Reconciliation</h1>
+            <p>Advanced customer identity linking system for FluxKart.com - Helping Dr. Emmett Brown and customers stay connected across time and space! This system consolidates customer identities across multiple purchases using different contact information.</p>
+        </div>
+
+        <!-- Main Content - Test and Stats -->
+        <div class="main-content">
+            <div class="card">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    Test Identity Recognition
+                </h2>
+                <p style="color: #b8b8b8; margin-bottom: 1.5rem;">Enter email and/or phone to test the identity reconciliation system. Try different combinations to see how contacts are linked!</p>
+                
+                <form id="identifyForm">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="mcfly@hillvalley.edu">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="123456">
+                    </div>
+                    <button type="submit" class="btn" id="submitBtn">
+                        <span id="btnText">Identify Contact</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                    </svg>
+                    Live System Statistics
+                </h2>
+                <p style="color: #b8b8b8; margin-bottom: 1.5rem;">Real-time metrics showing current database state and contact distribution.</p>
+                
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalContacts">-</div>
+                        <div class="stat-label">Total Contacts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="primaryContacts">-</div>
+                        <div class="stat-label">Primary Contacts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="secondaryContacts">-</div>
+                        <div class="stat-label">Secondary Contacts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Section - Full width under main content -->
+        <div class="output-section">
+            <div class="card">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    Identity Recognition Result
+                </h2>
+                <div id="result" style="display: none;"></div>
+                <div id="emptyResult" style="color: #888; text-align: center; padding: 2rem; font-style: italic;">
+                    No identification results yet. Use the test form above to identify contacts.
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Data Display Section -->
+        <div class="data-display-section">
+            <div class="card data-card">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                    </svg>
+                    Test Data History
+                </h2>
+                <p style="color: #b8b8b8; margin-bottom: 1.5rem;">All emails and phone numbers used in test identity recognition requests are displayed below.</p>
+                
+                <div id="testDataContainer">
+                    <div class="no-data">No test data available yet. Use the test form above to generate data.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Requirements Section -->
+        <div class="requirements-section">
+            <div class="requirements-grid">
+                <div class="card requirement-card">
+                    <h2>📋 Project Requirements</h2>
+                    <ul class="feature-list">
+                        <li>Identify customers across multiple purchases</li>
+                        <li>Link contacts with common email or phone</li>
+                        <li>Primary/Secondary contact precedence</li>
+                        <li>Handle contact consolidation</li>
+                        <li>Create new contacts when needed</li>
+                        <li>Convert primary to secondary when linking</li>
+                    </ul>
+                </div>
+
+                <div class="card requirement-card">
+                    <h2>🏗️ Database Schema</h2>
+                    <div class="code-block">{
+  id: Int (Primary Key)
+  phoneNumber: String?
+  email: String?
+  linkedId: Int? (FK to Contact.id)
+  linkPrecedence: "primary"|"secondary"
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime?
+}</div>
+                </div>
+
+                <div class="card example-card">
+                    <h2>🔗 Linking Logic</h2>
+                    <h3>Contacts are linked if they share:</h3>
+                    <ul class="feature-list">
+                        <li><span class="highlight">Same email address</span></li>
+                        <li><span class="highlight">Same phone number</span></li>
+                        <li>Oldest contact becomes <span class="highlight">primary</span></li>
+                        <li>Newer contacts become <span class="highlight">secondary</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Contact Creation Rules -->
+            <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+                <div class="card example-card">
+                    <h2>🔄 Contact Creation Rules</h2>
+                    <ul class="feature-list">
+                        <li>No existing match → Create <span class="highlight">primary</span></li>
+                        <li>Partial match → Create <span class="highlight">secondary</span></li>
+                        <li>Multiple primaries → Convert newer to <span class="highlight">secondary</span></li>
+                        <li>Exact match → Return existing data</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Endpoint Section -->
+        <div class="endpoint-section">
+            <div class="card endpoint-info">
+                <h2>🌐 API Endpoint Details</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h3>Request Format (POST /identify)</h3>
+                        <div class="code-block">{
+  "email"?: string,
+  "phoneNumber"?: string
+}</div>
+                    </div>
+                    <div>
+                        <h3>Response Format (HTTP 200)</h3>
+                        <div class="code-block">{
+  "contact": {
+    "primaryContatctId": number,
+    "emails": string[],
+    "phoneNumbers": string[],
+    "secondaryContactIds": number[]
+  }
+}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example Scenarios -->
+        <div class="card example-card" style="margin-bottom: 2rem;">
+            <h2>📝 Example Scenarios</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+                <div>
+                    <h3>Scenario 1: New Customer</h3>
+                    <div class="code-block">Request: {
+  "email": "doc@hillvalley.edu",
+  "phoneNumber": "555-0123"
+}
+
+Response: {
+  "contact": {
+    "primaryContatctId": 1,
+    "emails": ["doc@hillvalley.edu"],
+    "phoneNumbers": ["555-0123"],
+    "secondaryContactIds": []
+  }
+}</div>
+                </div>
+                <div>
+                    <h3>Scenario 2: Linking Contacts</h3>
+                    <div class="code-block">Request: {
+  "email": "mcfly@hillvalley.edu",
+  "phoneNumber": "555-0123"
+}
+
+Response: {
+  "contact": {
+    "primaryContatctId": 1,
+    "emails": ["doc@hillvalley.edu", "mcfly@hillvalley.edu"],
+    "phoneNumbers": ["555-0123"],
+    "secondaryContactIds": [2]
+  }
+}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
