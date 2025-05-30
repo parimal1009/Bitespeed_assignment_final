@@ -81,7 +81,7 @@ Identify and consolidate contact information.
 ```json
 {
   "contact": {
-    "primaryContatctId": 1,
+    "primaryContactId": 1,
     "emails": ["doc@hillvalley.edu", "mcfly@hillvalley.edu"],
     "phoneNumbers": ["123456"],
     "secondaryContactIds": [2, 3]
